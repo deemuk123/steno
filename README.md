@@ -213,11 +213,27 @@ steno dict add ./steno-dict-code.toml
 steno dict remove steno-dict-code
 ```
 
+### See cumulative compression savings
+
+```bash
+steno gain
+# Steno gain report
+# -----------------
+# Runs:      47
+# Original:  284,102 bytes
+# Saved:     91,438 bytes  (32.2%)
+```
+
+Every `steno compress` run is automatically recorded. `steno gain` shows the totals.
+
 ---
 
 ## Status
 
-> 🟢 **Phase 3 complete** — MCP server live. Works with Claude Code, Cursor, Windsurf, and any MCP-compatible client.
+> 🟢 **Phase 4 complete** — Community infrastructure live: release pipeline, contributing guide, reference dictionary pack, `steno gain` command.
+
+### Previous milestones
+> Phase 3 complete — MCP server with steno_compress, steno_decompress, steno_stats; works with Claude Code, Cursor, Windsurf.
 
 ### Journey Log
 
@@ -233,6 +249,7 @@ steno dict remove steno-dict-code
 | 2026-04-12 | Phase 1 complete — core Rust crate with 3-layer pipeline, universal dictionary, full test coverage |
 | 2026-04-12 | Phase 2 complete — full CLI with compress/decompress/stats/dict commands, cross-platform CI (Windows/Linux/macOS) |
 | 2026-04-12 | Phase 3 complete — MCP server with steno_compress, steno_decompress, steno_stats tools; works with Claude Code, Cursor, Windsurf |
+| 2026-04-12 | Phase 4 complete — release pipeline (GitHub Actions), contributing guide, steno-dict-code community pack, `steno gain` command |
 
 ---
 
@@ -312,7 +329,7 @@ That's it. No approval needed. The community discovers quality packs organically
 ### Contributing to the Core Dictionary
 The universal core dictionary (`dictionaries/core/universal.toml`) accepts PRs. Entries must be truly universal — patterns that appear across all domains and all LLM workflows. Domain-specific terms belong in community packs, not core.
 
-See `docs/contributing-dictionaries.md` for full guidelines *(coming soon)*.
+See [`docs/contributing-dictionaries.md`](docs/contributing-dictionaries.md) for full guidelines and [`CONTRIBUTING.md`](CONTRIBUTING.md) for code contributions.
 
 ---
 

@@ -20,6 +20,11 @@ pub fn personal_dict_path() -> PathBuf {
     config_dir().join("personal.toml")
 }
 
+/// Returns the path to the cumulative gain stats file.
+pub fn gain_path() -> PathBuf {
+    config_dir().join("gain.toml")
+}
+
 /// Ensure config directories exist (creates them if missing).
 pub fn ensure_dirs() -> std::io::Result<()> {
     std::fs::create_dir_all(dicts_dir())

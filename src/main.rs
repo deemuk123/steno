@@ -35,6 +35,8 @@ enum Commands {
         #[command(subcommand)]
         action: DictCommands,
     },
+    /// Show cumulative compression savings
+    Gain,
     /// Start the MCP server (Phase 3)
     Serve,
 }
@@ -82,7 +84,14 @@ fn main() {
             let input = read_input(file).unwrap_or_else(|e| die(e));
             let codec = build_codec();
             match codec.compress(&input) {
-                Ok(out) => print!("{}", out.text),
+                Ok(out) => {
+                    // Record gain before printing so a pipe doesn't interfere
+                    let gain_path = steno::config::gain_path();
+                    steno::config::ensure_dirs().ok();
+                    let mut stats = steno::gain::GainStats::load(&gain_path);
+                    stats.record(out.original_len, out.compressed_len, &gain_path);
+                    print!("{}", out.text);
+                }
                 Err(e) => die(e),
             }
         }
@@ -148,6 +157,20 @@ fn main() {
                 println!("Removed: {}", name);
             }
         },
+
+        Commands::Gain => {
+            let path = steno::config::gain_path();
+            let stats = steno::gain::GainStats::load(&path);
+            if stats.total_runs == 0 {
+                println!("No compression runs recorded yet. Run `steno compress` first.");
+            } else {
+                println!("Steno gain report");
+                println!("-----------------");
+                println!("Runs:      {}", stats.total_runs);
+                println!("Original:  {} bytes", stats.total_original_bytes);
+                println!("Saved:     {} bytes  ({:.1}%)", stats.bytes_saved(), stats.percent_saved());
+            }
+        }
 
         Commands::Serve => {
             tokio::runtime::Builder::new_current_thread()

@@ -1,0 +1,113 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            archive: steno-${{ github.ref_name }}-x86_64-linux.tar.gz
+            binary: steno
+
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            archive: steno-${{ github.ref_name }}-aarch64-macos.tar.gz
+            binary: steno
+
+          - target: x86_64-apple-darwin
+            os: macos-latest
+            archive: steno-${{ github.ref_name }}-x86_64-macos.tar.gz
+            binary: steno
+
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            archive: steno-${{ github.ref_name }}-x86_64-windows.zip
+            binary: steno.exe
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Build release binary
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Package (Linux / macOS)
+        if: runner.os != 'Windows'
+        run: |
+          cd target/${{ matrix.target }}/release
+          tar czf ../../../${{ matrix.archive }} ${{ matrix.binary }}
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cd target/${{ matrix.target }}/release
+          Compress-Archive -Path ${{ matrix.binary }} -DestinationPath ../../../${{ matrix.archive }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.archive }}
+          path: ${{ matrix.archive }}
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true
+          body: |
+            ## Install
+
+            **macOS (Apple Silicon)**
+            ```bash
+            curl -L https://github.com/deemuk123/steno/releases/download/${{ github.ref_name }}/steno-${{ github.ref_name }}-aarch64-macos.tar.gz | tar xz
+            sudo mv steno /usr/local/bin/
+            ```
+
+            **macOS (Intel)**
+            ```bash
+            curl -L https://github.com/deemuk123/steno/releases/download/${{ github.ref_name }}/steno-${{ github.ref_name }}-x86_64-macos.tar.gz | tar xz
+            sudo mv steno /usr/local/bin/
+            ```
+
+            **Linux**
+            ```bash
+            curl -L https://github.com/deemuk123/steno/releases/download/${{ github.ref_name }}/steno-${{ github.ref_name }}-x86_64-linux.tar.gz | tar xz
+            sudo mv steno /usr/local/bin/
+            ```
+
+            **Windows** — download `steno-${{ github.ref_name }}-x86_64-windows.zip`, extract, add to PATH.
+
+            **Or build from source:**
+            ```bash
+            cargo install steno
+            ```

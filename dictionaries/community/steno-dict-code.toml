@@ -1,0 +1,108 @@
+[meta]
+name        = "steno-dict-code"
+description = "Programming, software engineering, stack traces, error messages, and development workflow terms"
+author      = "deemuk123"
+version     = "0.1.0"
+language    = "en"
+
+[entries]
+# --- Error and exception patterns ---
+"NullPointerException"                         = "NPE"
+"IndexOutOfBoundsException"                    = "IOOBE"
+"stack overflow"                               = "SOF"
+"segmentation fault"                           = "segfault"
+"undefined is not a function"                  = "undef-fn"
+"cannot read property of undefined"            = "read-undef"
+"module not found"                             = "mod-404"
+
+# --- Common programming phrases ---
+"function"                                     = "fn"
+"return value"                                 = "ret"
+"null pointer"                                 = "nullptr"
+"boolean"                                      = "bool"
+"integer"                                      = "int"
+"string concatenation"                         = "str-cat"
+"asynchronous"                                 = "async"
+"synchronous"                                  = "sync"
+"dependency injection"                         = "DI"
+"inversion of control"                         = "IoC"
+"object-oriented programming"                  = "OOP"
+"functional programming"                       = "FP"
+"test-driven development"                      = "TDD"
+"behavior-driven development"                  = "BDD"
+
+# --- Architecture and patterns ---
+"single responsibility principle"              = "SRP"
+"open/closed principle"                        = "OCP"
+"Liskov substitution principle"                = "LSP"
+"interface segregation principle"              = "ISP"
+"dependency inversion principle"               = "DIP"
+"model-view-controller"                        = "MVC"
+"model-view-viewmodel"                         = "MVVM"
+"representational state transfer"              = "REST"
+"remote procedure call"                        = "RPC"
+"message queue"                                = "MQ"
+"event-driven architecture"                    = "EDA"
+"microservices architecture"                   = "MSA"
+
+# --- Dev workflow ---
+"pull request"                                 = "PR"
+"continuous integration"                       = "CI"
+"continuous deployment"                        = "CD"
+"continuous integration and continuous deployment" = "CI/CD"
+"code review"                                  = "CR"
+"work in progress"                             = "WIP"
+"breaking change"                              = "BC"
+"backwards compatible"                         = "BC-compat"
+"minimum viable product"                       = "MVP"
+"proof of concept"                             = "PoC"
+"lgtm looks good to me"                        = "LGTM"
+
+# --- Database ---
+"database"                                     = "DB"
+"structured query language"                    = "SQL"
+"foreign key"                                  = "FK"
+"primary key"                                  = "PK"
+"object-relational mapping"                    = "ORM"
+"create read update delete"                    = "CRUD"
+"not null"                                     = "NN"
+"transactions per second"                      = "TPS"
+
+# --- Networking / API ---
+"application programming interface"            = "API"
+"hypertext transfer protocol"                  = "HTTP"
+"hypertext transfer protocol secure"           = "HTTPS"
+"uniform resource locator"                     = "URL"
+"uniform resource identifier"                  = "URI"
+"transmission control protocol"                = "TCP"
+"internet protocol"                            = "IP"
+"domain name system"                           = "DNS"
+"load balancer"                                = "LB"
+"rate limiting"                                = "RL"
+
+# --- Infrastructure ---
+"command line interface"                       = "CLI"
+"graphical user interface"                     = "GUI"
+"operating system"                             = "OS"
+"virtual machine"                              = "VM"
+"container orchestration"                      = "CO"
+"infrastructure as code"                       = "IaC"
+"software as a service"                        = "SaaS"
+"platform as a service"                        = "PaaS"
+"infrastructure as a service"                  = "IaaS"
+
+# --- Performance / Observability ---
+"key performance indicator"                    = "KPI"
+"service level agreement"                      = "SLA"
+"service level objective"                      = "SLO"
+"mean time to recovery"                        = "MTTR"
+"mean time between failures"                   = "MTBF"
+"root cause analysis"                          = "RCA"
+"out of memory"                                = "OOM"
+"garbage collection"                           = "GC"
+
+# --- Rust-specific (safe in most code contexts) ---
+"lifetime parameter"                           = "lt-param"
+"trait object"                                 = "dyn-trait"
+"ownership and borrowing"                      = "own+borrow"
+"pattern matching"                             = "pat-match"

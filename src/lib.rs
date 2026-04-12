@@ -2,6 +2,7 @@
 pub mod codec;
 pub mod config;
 pub mod dictionary;
+pub mod gain;
 pub mod layers;
 pub mod mcp;
 
