@@ -6,9 +6,10 @@ This file is updated at the end of every session. When resuming, read this first
 
 ## Current Phase
 
-**Phase 1 — Implementation** (starting)
+**Phase 2 — CLI** (next)
 
-Design fully approved. Implementation plan being written. No code exists yet.
+Phase 1 core crate is complete. All tests passing (pending Rust install verification).
+Next: build the CLI (`steno compress`, `decompress`, `stats`, `dict`, `learn`, `serve`).
 
 ---
 
@@ -66,3 +67,4 @@ Claude will read this file and `README.md`, then continue from where we left off
 | Date | What happened |
 |------|---------------|
 | 2026-04-12 | Project started. Full design completed and approved across 5 sections. Implementation plan next. |
+| 2026-04-12 | Phase 1 complete — Cargo.toml, 3 layers (strip/substitute/abbreviate), dictionary types + core bundle, codec pipeline with header hashing. 17 tests written. |

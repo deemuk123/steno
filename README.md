@@ -129,7 +129,7 @@ steno ships as three things in one:
 
 ## Status
 
-> 🔵 **In design** — This document tracks the project from idea to product.
+> 🟡 **Phase 1 complete** — Core crate built. CLI coming in Phase 2.
 
 ### Journey Log
 
@@ -142,6 +142,7 @@ steno ships as three things in one:
 | 2026-04-12 | Dictionary design approved: 3-tier system (core + community packs + personal), open publishing model |
 | 2026-04-12 | Error handling approved: fail-safe compression, loud decompression errors, 3-level test strategy |
 | 2026-04-12 | Full design complete — moving to implementation planning |
+| 2026-04-12 | Phase 1 complete — core Rust crate with 3-layer pipeline, universal dictionary, full test coverage |
 
 ---
 

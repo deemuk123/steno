@@ -1,0 +1,21 @@
+[package]
+name = "steno"
+version = "0.1.0"
+edition = "2021"
+description = "Compress anything going into your LLM. Less tokens, same meaning."
+license = "MIT"
+repository = "https://github.com/deemuk123/steno"
+
+[dependencies]
+toml = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+sha2 = "0.10"
+hex = "0.4"
+
+[lib]
+name = "steno"
+path = "src/lib.rs"
+
+[[bin]]
+name = "steno"
+path = "src/main.rs"
