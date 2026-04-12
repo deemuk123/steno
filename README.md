@@ -127,9 +127,51 @@ steno ships as three things in one:
 
 ---
 
+## Usage
+
+### Install
+
+```bash
+# Coming soon: cargo install steno
+# For now: clone and cargo build --release
+```
+
+### Compress text
+
+```bash
+echo "in order to succeed you must for example practice" | steno compress
+cat document.md | steno compress > document.steno
+```
+
+### Decompress
+
+```bash
+cat document.steno | steno decompress
+steno decompress document.steno
+```
+
+### Check savings without compressing
+
+```bash
+cat document.md | steno stats
+# Original:   1240 bytes
+# Compressed:  891 bytes
+# Saved:       28.1%
+```
+
+### Manage dictionary packs
+
+```bash
+steno dict list
+steno dict add ./steno-dict-code.toml
+steno dict remove steno-dict-code
+```
+
+---
+
 ## Status
 
-> 🟡 **Phase 1 complete** — Core crate built. CLI coming in Phase 2.
+> 🟢 **Phase 2 complete** — CLI built. Cross-platform (Windows, Linux, macOS). MCP server coming in Phase 3.
 
 ### Journey Log
 
@@ -143,6 +185,7 @@ steno ships as three things in one:
 | 2026-04-12 | Error handling approved: fail-safe compression, loud decompression errors, 3-level test strategy |
 | 2026-04-12 | Full design complete — moving to implementation planning |
 | 2026-04-12 | Phase 1 complete — core Rust crate with 3-layer pipeline, universal dictionary, full test coverage |
+| 2026-04-12 | Phase 2 complete — full CLI with compress/decompress/stats/dict commands, cross-platform CI (Windows/Linux/macOS) |
 
 ---
 
