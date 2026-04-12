@@ -15,32 +15,48 @@ pub fn substitute(text: &str, dict: &DictionarySet) -> String {
         .collect();
     patterns.sort_by(|a, b| b.0.len().cmp(&a.0.len()));
 
-    let lower = text.to_lowercase();
     let mut result = text.to_string();
-    let mut lower_result = lower.clone();
 
     for (pattern, code) in &patterns {
         let pat_lower = pattern.to_lowercase();
-        // Replace all occurrences, preserving surrounding context
-        while let Some(pos) = lower_result.find(pat_lower.as_str()) {
-            // Only replace if at word boundary (preceded/followed by space, newline, or start/end)
+        // Recompute lowercase view after each pattern (result may have changed)
+        let lower_result = result.to_lowercase();
+        let mut output = String::with_capacity(result.len());
+        let mut last_end = 0usize; // byte offset — flushed up to here
+        let mut search_start = 0usize; // byte offset — search from here
+
+        loop {
+            let Some(rel_pos) = lower_result[search_start..].find(pat_lower.as_str()) else {
+                break;
+            };
+            let pos = search_start + rel_pos;
+            let end_pos = pos + pat_lower.len();
+
+            // Byte-safe word-boundary checks (chars().nth(byte_idx) is WRONG for multi-byte Unicode)
             let before_ok = pos == 0 || {
-                let c = lower_result.chars().nth(pos - 1).unwrap_or(' ');
+                let c = lower_result[..pos].chars().last().unwrap_or(' ');
                 c == ' ' || c == '\n' || c == '\t'
             };
-            let after_pos = pos + pat_lower.len();
-            let after_ok = after_pos >= lower_result.len() || {
-                let c = lower_result.chars().nth(after_pos).unwrap_or(' ');
+            let after_ok = end_pos >= lower_result.len() || {
+                let c = lower_result[end_pos..].chars().next().unwrap_or(' ');
                 c == ' ' || c == '\n' || c == '\t' || c == '.' || c == ',' || c == ':'
             };
 
             if before_ok && after_ok {
-                result.replace_range(pos..pos + pattern.len(), code);
-                lower_result.replace_range(pos..pos + pat_lower.len(), code);
+                // Flush original bytes up to this match, then emit the replacement code
+                output.push_str(&result[last_end..pos]);
+                output.push_str(code);
+                last_end = end_pos;
+                search_start = end_pos;
             } else {
-                break; // avoid infinite loop on non-boundary match
+                // Non-boundary occurrence — skip past it and keep searching
+                let skip = lower_result[pos..].chars().next().map(|c| c.len_utf8()).unwrap_or(1);
+                search_start = pos + skip;
             }
         }
+        // Flush remainder
+        output.push_str(&result[last_end..]);
+        result = output;
     }
     result
 }
