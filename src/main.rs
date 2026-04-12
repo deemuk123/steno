@@ -150,8 +150,12 @@ fn main() {
         },
 
         Commands::Serve => {
-            eprintln!("steno serve: MCP server coming in Phase 3.");
-            std::process::exit(1);
+            tokio::runtime::Builder::new_current_thread()
+                .enable_all()
+                .build()
+                .unwrap()
+                .block_on(steno::mcp::server::run())
+                .unwrap_or_else(|e| die(e));
         }
     }
 }

@@ -127,6 +127,52 @@ steno ships as three things in one:
 
 ---
 
+## MCP Setup
+
+steno works as an MCP server with Claude Code, Cursor, Windsurf, and any MCP-compatible client.
+
+### Claude Code
+
+Add to `~/.claude/settings.json` (or `.claude/settings.json` in your project):
+
+```json
+{
+  "mcpServers": {
+    "steno": {
+      "command": "steno",
+      "args": ["serve"]
+    }
+  }
+}
+```
+
+### Cursor / Windsurf
+
+Add to your MCP config file:
+
+```json
+{
+  "mcpServers": {
+    "steno": {
+      "command": "steno",
+      "args": ["serve"]
+    }
+  }
+}
+```
+
+### Available MCP tools
+
+| Tool | Description |
+|------|-------------|
+| `steno_compress` | Compress text to reduce token usage (20–70% savings) |
+| `steno_decompress` | Restore compressed text to the original |
+| `steno_stats` | Show savings % without modifying text |
+
+All three tools accept `{ "text": "..." }` as input.
+
+---
+
 ## Usage
 
 ### Install
@@ -171,7 +217,7 @@ steno dict remove steno-dict-code
 
 ## Status
 
-> 🟢 **Phase 2 complete** — CLI built. Cross-platform (Windows, Linux, macOS). MCP server coming in Phase 3.
+> 🟢 **Phase 3 complete** — MCP server live. Works with Claude Code, Cursor, Windsurf, and any MCP-compatible client.
 
 ### Journey Log
 
@@ -186,6 +232,7 @@ steno dict remove steno-dict-code
 | 2026-04-12 | Full design complete — moving to implementation planning |
 | 2026-04-12 | Phase 1 complete — core Rust crate with 3-layer pipeline, universal dictionary, full test coverage |
 | 2026-04-12 | Phase 2 complete — full CLI with compress/decompress/stats/dict commands, cross-platform CI (Windows/Linux/macOS) |
+| 2026-04-12 | Phase 3 complete — MCP server with steno_compress, steno_decompress, steno_stats tools; works with Claude Code, Cursor, Windsurf |
 
 ---
 

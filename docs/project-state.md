@@ -6,10 +6,10 @@ This file is updated at the end of every session. When resuming, read this first
 
 ## Current Phase
 
-**Phase 3 — MCP Server** (next)
+**Phase 4 — Community Infrastructure** (next)
 
-Phase 2 CLI is complete. All 36 tests passing. Cross-platform CI configured.
-Next: build the MCP server (`steno serve`) for Claude/Cursor/Windsurf/any MCP-compatible LLM.
+Phase 3 MCP server is complete. All 36 tests passing.
+Next: CI release pipeline (build binaries for all targets), `cargo install steno`, contributing guide for dictionary packs.
 
 ---
 
@@ -69,3 +69,4 @@ Claude will read this file and `README.md`, then continue from where we left off
 | 2026-04-12 | Project started. Full design completed and approved across 5 sections. Implementation plan next. |
 | 2026-04-12 | Phase 1 complete — Cargo.toml, 3 layers (strip/substitute/abbreviate), dictionary types + core bundle, codec pipeline with header hashing. 28 tests passing. |
 | 2026-04-12 | Phase 2 complete — CLI (compress/decompress/stats/dict), platform-aware config paths, dictionary loader, codec builder. 36 tests passing. GitHub Actions CI for Windows/Linux/macOS. |
+| 2026-04-12 | Phase 3 complete — MCP server (steno serve) with steno_compress/steno_decompress/steno_stats tools via rmcp 1.x. stdio transport, tracing to stderr. |
