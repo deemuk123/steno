@@ -25,6 +25,11 @@ pub fn gain_path() -> PathBuf {
     config_dir().join("gain.toml")
 }
 
+/// Returns the path to the phrase usage frequency file (used by steno learn/suggest).
+pub fn usage_path() -> PathBuf {
+    config_dir().join("usage.toml")
+}
+
 /// Ensure config directories exist (creates them if missing).
 pub fn ensure_dirs() -> std::io::Result<()> {
     std::fs::create_dir_all(dicts_dir())
