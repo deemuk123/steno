@@ -1,5 +1,5 @@
 [package]
-name = "steno"
+name = "deemuk"
 version = "1.0.0"
 edition = "2021"
 description = "Compress any text before it enters your LLM. Less tokens, same meaning."
@@ -25,5 +25,5 @@ name = "steno"
 path = "src/lib.rs"
 
 [[bin]]
-name = "steno"
+name = "deemuk"
 path = "src/main.rs"

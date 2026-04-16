@@ -1,4 +1,4 @@
-# steno v1.0.0 — Launch Posts
+# deemuk v1.0.0 — Launch Posts
 
 Use these when posting. Customize the benchmark numbers if you have fresher data.
 
@@ -13,7 +13,7 @@ Show HN: steno – compress any text before it hits your LLM context window (Rus
 
 **Body:**
 ```
-steno sits between your content and your LLM and compresses text before it enters
+deemuk sits between your content and your LLM and compresses text before it enters
 the context window. Three-layer pipeline: structural stripping → pattern substitution
 → domain abbreviation. Fully reversible — the LLM sees compressed text and can
 decompress it exactly.
@@ -24,12 +24,12 @@ research papers). Savings compound with domain packs.
 Features:
 - CLI, Rust crate, and MCP server (works with Claude Code, Cursor, Windsurf)
 - Community dictionary packs: code, science, medical (more welcome)
-- `steno learn <corpus>` builds a personal extension from your own text
-- `steno gain` tracks cumulative savings across all runs
+- `deemuk learn <corpus>` builds a personal extension from your own text
+- `deemuk gain` tracks cumulative savings across all runs
 
 The dictionary is the product. Contributions welcome — any domain, any language.
 
-cargo install steno
+cargo install deemuk
 https://github.com/deemuk123/steno
 ```
 
@@ -39,7 +39,7 @@ https://github.com/deemuk123/steno
 
 **Title:**
 ```
-[project] steno v1.0.0 – LLM token compressor built in Rust
+[project] deemuk v1.0.0 – LLM token compressor built in Rust
 ```
 
 **Body:**
@@ -56,10 +56,10 @@ Fully reversible. Ships as CLI + Rust crate + MCP server.
 The interesting Rust bits:
 - Longest-match substitution with word-boundary checks (Unicode-safe)
 - Dict hash in compressed header for exact decompression verification
-- `steno learn` uses n-gram frequency analysis to auto-suggest dict entries
+- `deemuk learn` uses n-gram frequency analysis to auto-suggest dict entries
 - Cross-platform CI on Windows/Linux/macOS
 
-cargo install steno
+cargo install deemuk
 https://github.com/deemuk123/steno
 
 Looking for contributors on domain packs (legal, finance, any language).
@@ -78,7 +78,7 @@ steno: compress any text before sending to your LLM — 25-95% token savings, MI
 **Body:**
 ```
 If you feed large documents, RAG chunks, wiki pages, or long system prompts to your
-LLM, steno compresses them before they hit the context window.
+LLM, deemuk compresses them before they hit the context window.
 
 Results from real usage:
 - General prose: 25–40% savings
@@ -89,13 +89,13 @@ How it works:
 - Three compression layers (structural strip → phrase substitution → domain abbrev)
 - Fully reversible — include the steno header and the LLM can decompress exactly
 - Community dictionary packs for code, science, medical (TOML format, easy to add)
-- `steno learn <your-docs>` builds a personal dictionary from your own corpus
+- `deemuk learn <your-docs>` builds a personal dictionary from your own corpus
 - MCP server for native Claude Code / Cursor / Windsurf integration
 
 Works with any LLM. No API changes needed — compress before sending, decompress
 the output if needed.
 
-cargo install steno | https://github.com/deemuk123/steno
+cargo install deemuk | https://github.com/deemuk123/steno
 ```
 
 ---
@@ -104,11 +104,11 @@ cargo install steno | https://github.com/deemuk123/steno
 
 ```
 Tweet 1:
-Shipped steno v1.0.0 — compress any text before it hits your LLM context window.
+Shipped deemuk v1.0.0 — compress any text before it hits your LLM context window.
 
 25-95% token savings. Fully reversible. MIT.
 
-cargo install steno
+cargo install deemuk
 
 🧵
 
@@ -132,7 +132,7 @@ Add your own in 10 minutes — it's just TOML:
 No permission needed. Publish to GitHub, share the link.
 
 Tweet 4:
-steno learn <your-corpus>
+deemuk learn <your-corpus>
 
 Analyzes your text files, tracks phrase frequencies, suggests what to add to
 your personal dictionary.
@@ -145,15 +145,15 @@ Also ships as an MCP server.
 Works natively with Claude Code, Cursor, Windsurf.
 
 Add to settings.json:
-{ "steno": { "command": "steno", "args": ["serve"] } }
+{ "deemuk": { "command": "deemuk", "args": ["serve"] } }
 
-LLM can now call steno_compress / steno_decompress directly.
+LLM can now call deemuk_compress / deemuk_decompress directly.
 
 Tweet 6:
 Built in Rust. MIT license. All platforms.
 
 GitHub: https://github.com/deemuk123/steno
-cargo install steno
+cargo install deemuk
 
 PRs welcome — especially domain dictionary packs.
 ```
