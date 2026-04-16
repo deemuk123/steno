@@ -47,11 +47,14 @@ All three layers are fully reversible — steno can decompress back to the origi
 
 The dictionary is the product. steno ships with a **universal core dictionary** covering common LLM patterns. The community contributes **domain packs**:
 
-- `steno-dict-code` — programming terms, error messages, stack traces
-- `steno-dict-science` — research papers, citations, methodology
-- `steno-dict-legal` — legal documents, contracts, case law
-- `steno-dict-medical` — clinical notes, diagnoses, pharmacology
-- *(more as the community grows)*
+| Pack | Coverage | Install |
+|------|----------|---------|
+| `steno-dict-code` | Programming, stack traces, dev workflow | built-in |
+| `steno-dict-science` | Research papers, methodology, LLM benchmarks | built-in |
+| `steno-dict-medical` | Clinical notes, diagnoses, pharmacology | built-in |
+| `steno-dict-legal` | Legal documents, contracts, case law | community |
+| `steno-dict-finance` | Markets, economics, financial reports | community |
+| *(your domain)* | Anything | `steno dict add ./your-pack.toml` |
 
 Users can also run `steno learn <path>` to build a **personal extension dictionary** from their own corpus. The more users contribute, the better compression gets for everyone.
 
@@ -178,8 +181,11 @@ All three tools accept `{ "text": "..." }` as input.
 ### Install
 
 ```bash
-# Coming soon: cargo install steno
-# For now: clone and cargo build --release
+# Rust users (recommended)
+cargo install steno
+
+# Prebuilt binaries — Linux, macOS, Windows
+# Download from: https://github.com/deemuk123/steno/releases/latest
 ```
 
 ### Compress text
@@ -226,11 +232,48 @@ steno gain
 
 Every `steno compress` run is automatically recorded. `steno gain` shows the totals.
 
+### Learn from your own corpus
+
+```bash
+# Analyze any text file and track phrase frequencies
+steno learn ./my-notes.md
+steno learn ./docs/
+
+# See top phrases not yet in any dictionary
+steno suggest --min 5 --top 20
+
+# Auto-add all suggestions to your personal dictionary
+steno suggest --min 5 --add
+
+# Or add one at a time
+steno dict personal-add "your verbose phrase" "short-code"
+```
+
+The more you `learn`, the better `suggest` gets. Personal dictionary entries stack on top of all community packs.
+
+---
+
+## Quick Demo
+
+```
+Input (198 chars):
+  Instead of explaining the concept to the audience in order to clarify
+  the solution, start with the pain point rather than just the answer.
+  This builds credibility by showing what actually matters.
+
+steno compress → 143 chars (-28%):
+  inst-of explaining the concept to the-aud →-to clarify
+  the-soln, st-with the pain-pt r-than the answer.
+  this-bld credibility by-show wh-actly matters.
+```
+
+Savings compound with domain packs — code-heavy content routinely hits 60–95%.
+
 ---
 
 ## Status
 
-> 🟢 **Phase 4 complete** — Community infrastructure live: release pipeline, contributing guide, reference dictionary pack, `steno gain` command.
+> 🟢 **v1.0.0** — Production ready. Full CLI, MCP server, community dictionaries, `steno learn` corpus builder, `steno gain` savings tracker.
 
 ### Previous milestones
 > Phase 3 complete — MCP server with steno_compress, steno_decompress, steno_stats; works with Claude Code, Cursor, Windsurf.

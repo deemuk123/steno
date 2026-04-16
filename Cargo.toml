@@ -1,10 +1,12 @@
 [package]
 name = "steno"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
-description = "Compress anything going into your LLM. Less tokens, same meaning."
+description = "Compress any text before it enters your LLM. Less tokens, same meaning."
 license = "MIT"
 repository = "https://github.com/deemuk123/steno"
+keywords = ["llm", "compression", "tokens", "cli", "nlp"]
+categories = ["command-line-utilities", "text-processing", "compression"]
 
 [dependencies]
 toml = "0.8"
