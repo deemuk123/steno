@@ -54,9 +54,9 @@ The dictionary is the product. steno ships with a **universal core dictionary** 
 | `steno-dict-medical` | Clinical notes, diagnoses, pharmacology | built-in |
 | `steno-dict-legal` | Legal documents, contracts, case law | community |
 | `steno-dict-finance` | Markets, economics, financial reports | community |
-| *(your domain)* | Anything | `steno dict add ./your-pack.toml` |
+| *(your domain)* | Anything | `deemuk dict add ./your-pack.toml` |
 
-Users can also run `steno learn <path>` to build a **personal extension dictionary** from their own corpus. The more users contribute, the better compression gets for everyone.
+Users can also run `deemuk learn <path>` to build a **personal extension dictionary** from their own corpus. The more users contribute, the better compression gets for everyone.
 
 ---
 
@@ -66,7 +66,7 @@ steno is a **standalone tool**. It works on its own with zero dependencies. Opti
 
 ### steno alone
 ```
-Your content  ──→  steno compress  ──→  LLM context window
+Your content  ──→  deemuk compress  ──→  LLM context window
 ```
 Compresses documents, wiki pages, prompts, conversation history before they reach the LLM. Best for: anyone feeding large text into an LLM who wants fewer tokens.
 
@@ -87,7 +87,7 @@ Best for: developers using Claude Code or similar AI coding assistants.
 ```
 Past sessions  ──→  MemPalace  ──→  relevant memories (semantic search)
                                          ↓
-Your content   ──→  steno compress  ──→  LLM context window
+Your content   ──→  deemuk compress  ──→  LLM context window
 ```
 MemPalace retrieves only the memories relevant to your current session. steno compresses those memories further before they enter context. Without steno, MemPalace memories arrive verbose. With steno, the same memories use 60-80% fewer tokens.
 
@@ -98,7 +98,7 @@ Best for: anyone using MemPalace for long-running AI sessions or personal knowle
 ### steno + RTK + MemPalace *(full stack)*
 ```
 Bash output   ──→  RTK        ──→  ┐
-Past memories ──→  MemPalace  ──→  ├──→  steno compress  ──→  LLM
+Past memories ──→  MemPalace  ──→  ├──→  deemuk compress  ──→  LLM
 Documents     ──→  steno      ──→  ┘
 ```
 Every token source is compressed. Command output, memory retrieval, and document context all arrive at the LLM in their most compact form. This is the maximum token efficiency configuration.
@@ -182,7 +182,7 @@ All three tools accept `{ "text": "..." }` as input.
 
 ```bash
 # Rust users (recommended)
-cargo install steno
+cargo install deemuk
 
 # Prebuilt binaries — Linux, macOS, Windows
 # Download from: https://github.com/deemuk123/steno/releases/latest
@@ -191,21 +191,21 @@ cargo install steno
 ### Compress text
 
 ```bash
-echo "in order to succeed you must for example practice" | steno compress
-cat document.md | steno compress > document.steno
+echo "in order to succeed you must for example practice" | deemuk compress
+cat document.md | deemuk compress > document.steno
 ```
 
 ### Decompress
 
 ```bash
-cat document.steno | steno decompress
-steno decompress document.steno
+cat document.steno | deemuk decompress
+deemuk decompress document.steno
 ```
 
 ### Check savings without compressing
 
 ```bash
-cat document.md | steno stats
+cat document.md | deemuk stats
 # Original:   1240 bytes
 # Compressed:  891 bytes
 # Saved:       28.1%
@@ -214,15 +214,15 @@ cat document.md | steno stats
 ### Manage dictionary packs
 
 ```bash
-steno dict list
-steno dict add ./steno-dict-code.toml
-steno dict remove steno-dict-code
+deemuk dict list
+deemuk dict add ./steno-dict-code.toml
+deemuk dict remove steno-dict-code
 ```
 
 ### See cumulative compression savings
 
 ```bash
-steno gain
+deemuk gain
 # Steno gain report
 # -----------------
 # Runs:      47
@@ -230,23 +230,23 @@ steno gain
 # Saved:     91,438 bytes  (32.2%)
 ```
 
-Every `steno compress` run is automatically recorded. `steno gain` shows the totals.
+Every `deemuk compress` run is automatically recorded. `deemuk gain` shows the totals.
 
 ### Learn from your own corpus
 
 ```bash
 # Analyze any text file and track phrase frequencies
-steno learn ./my-notes.md
-steno learn ./docs/
+deemuk learn ./my-notes.md
+deemuk learn ./docs/
 
 # See top phrases not yet in any dictionary
-steno suggest --min 5 --top 20
+deemuk suggest --min 5 --top 20
 
 # Auto-add all suggestions to your personal dictionary
-steno suggest --min 5 --add
+deemuk suggest --min 5 --add
 
 # Or add one at a time
-steno dict personal-add "your verbose phrase" "short-code"
+deemuk dict personal-add "your verbose phrase" "short-code"
 ```
 
 The more you `learn`, the better `suggest` gets. Personal dictionary entries stack on top of all community packs.
@@ -261,7 +261,7 @@ Input (198 chars):
   the solution, start with the pain point rather than just the answer.
   This builds credibility by showing what actually matters.
 
-steno compress → 143 chars (-28%):
+deemuk compress → 143 chars (-28%):
   inst-of explaining the concept to the-aud →-to clarify
   the-soln, st-with the pain-pt r-than the answer.
   this-bld credibility by-show wh-actly matters.
@@ -273,7 +273,7 @@ Savings compound with domain packs — code-heavy content routinely hits 60–95
 
 ## Status
 
-> 🟢 **v1.0.0** — Production ready. Full CLI, MCP server, community dictionaries, `steno learn` corpus builder, `steno gain` savings tracker.
+> 🟢 **v1.0.0** — Production ready. Full CLI, MCP server, community dictionaries, `deemuk learn` corpus builder, `deemuk gain` savings tracker.
 
 ### Previous milestones
 > Phase 3 complete — MCP server with steno_compress, steno_decompress, steno_stats; works with Claude Code, Cursor, Windsurf.
@@ -292,7 +292,7 @@ Savings compound with domain packs — code-heavy content routinely hits 60–95
 | 2026-04-12 | Phase 1 complete — core Rust crate with 3-layer pipeline, universal dictionary, full test coverage |
 | 2026-04-12 | Phase 2 complete — full CLI with compress/decompress/stats/dict commands, cross-platform CI (Windows/Linux/macOS) |
 | 2026-04-12 | Phase 3 complete — MCP server with steno_compress, steno_decompress, steno_stats tools; works with Claude Code, Cursor, Windsurf |
-| 2026-04-12 | Phase 4 complete — release pipeline (GitHub Actions), contributing guide, steno-dict-code community pack, `steno gain` command |
+| 2026-04-12 | Phase 4 complete — release pipeline (GitHub Actions), contributing guide, steno-dict-code community pack, `deemuk gain` command |
 
 ---
 
@@ -310,7 +310,7 @@ steno/
     dictionary/
       core.rs            ← bundled universal dictionary (compiled in)
       loader.rs          ← loads community packs + user extensions
-      learner.rs         ← corpus analysis for `steno learn`
+      learner.rs         ← corpus analysis for `deemuk learn`
     mcp/
       server.rs          ← MCP server exposing compress/decompress tools
     codec.rs             ← compress + decompress pipeline orchestration
@@ -358,7 +358,7 @@ language    = "en"
 
 **3. Users install it:**
 ```bash
-steno dict add github-username/steno-dict-<name>
+deemuk dict add github-username/steno-dict-<name>
 ```
 
 That's it. No approval needed. The community discovers quality packs organically.

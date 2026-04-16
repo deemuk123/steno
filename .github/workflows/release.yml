@@ -18,23 +18,23 @@ jobs:
         include:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-latest
-            archive: steno-${{ github.ref_name }}-x86_64-linux.tar.gz
-            binary: steno
+            archive: deemuk-${{ github.ref_name }}-x86_64-linux.tar.gz
+            binary: deemuk
 
           - target: aarch64-apple-darwin
             os: macos-latest
-            archive: steno-${{ github.ref_name }}-aarch64-macos.tar.gz
-            binary: steno
+            archive: deemuk-${{ github.ref_name }}-aarch64-macos.tar.gz
+            binary: deemuk
 
           - target: x86_64-apple-darwin
             os: macos-latest
-            archive: steno-${{ github.ref_name }}-x86_64-macos.tar.gz
-            binary: steno
+            archive: deemuk-${{ github.ref_name }}-x86_64-macos.tar.gz
+            binary: deemuk
 
           - target: x86_64-pc-windows-msvc
             os: windows-latest
-            archive: steno-${{ github.ref_name }}-x86_64-windows.zip
-            binary: steno.exe
+            archive: deemuk-${{ github.ref_name }}-x86_64-windows.zip
+            binary: deemuk.exe
 
     steps:
       - uses: actions/checkout@v4
@@ -89,25 +89,25 @@ jobs:
 
             **macOS (Apple Silicon)**
             ```bash
-            curl -L https://github.com/deemuk123/steno/releases/download/${{ github.ref_name }}/steno-${{ github.ref_name }}-aarch64-macos.tar.gz | tar xz
-            sudo mv steno /usr/local/bin/
+            curl -L https://github.com/deemuk123/steno/releases/download/${{ github.ref_name }}/deemuk-${{ github.ref_name }}-aarch64-macos.tar.gz | tar xz
+            sudo mv deemuk /usr/local/bin/
             ```
 
             **macOS (Intel)**
             ```bash
-            curl -L https://github.com/deemuk123/steno/releases/download/${{ github.ref_name }}/steno-${{ github.ref_name }}-x86_64-macos.tar.gz | tar xz
-            sudo mv steno /usr/local/bin/
+            curl -L https://github.com/deemuk123/steno/releases/download/${{ github.ref_name }}/deemuk-${{ github.ref_name }}-x86_64-macos.tar.gz | tar xz
+            sudo mv deemuk /usr/local/bin/
             ```
 
             **Linux**
             ```bash
-            curl -L https://github.com/deemuk123/steno/releases/download/${{ github.ref_name }}/steno-${{ github.ref_name }}-x86_64-linux.tar.gz | tar xz
-            sudo mv steno /usr/local/bin/
+            curl -L https://github.com/deemuk123/steno/releases/download/${{ github.ref_name }}/deemuk-${{ github.ref_name }}-x86_64-linux.tar.gz | tar xz
+            sudo mv deemuk /usr/local/bin/
             ```
 
-            **Windows** — download `steno-${{ github.ref_name }}-x86_64-windows.zip`, extract, add to PATH.
+            **Windows** — download `deemuk-${{ github.ref_name }}-x86_64-windows.zip`, extract, add to PATH.
 
             **Or build from source:**
             ```bash
-            cargo install steno
+            cargo install deemuk
             ```
