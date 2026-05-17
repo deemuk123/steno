@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::path::Path;
 use serde::{Serialize, Deserialize};
 use crate::dictionary::DictionarySet;
@@ -77,14 +77,23 @@ impl UsageStats {
     }
 }
 
-/// Propose a short code for a phrase using word initials.
-/// "machine learning model" → "mlm"
-/// "neural network" → "nn"
-pub fn suggest_code(phrase: &str) -> String {
-    phrase
+/// Propose a short code for a phrase using word initials, with collision dedup.
+/// "machine learning model" → "mlm"; if "mlm" is taken → "mlm2", "mlm3" … "mlm9"
+pub fn suggest_code(phrase: &str, existing_codes: &HashSet<String>) -> String {
+    let base: String = phrase
         .split_whitespace()
         .filter_map(|w| w.chars().next())
-        .collect()
+        .collect();
+    if !existing_codes.contains(&base) {
+        return base;
+    }
+    for n in 2u8..=9u8 {
+        let candidate = format!("{}{}", base, n);
+        if !existing_codes.contains(&candidate) {
+            return candidate;
+        }
+    }
+    format!("{}9", base)
 }
 
 #[cfg(test)]
@@ -155,8 +164,45 @@ mod tests {
 
     #[test]
     fn test_suggest_code_initials() {
-        assert_eq!(suggest_code("machine learning model"), "mlm");
-        assert_eq!(suggest_code("neural network"), "nn");
-        assert_eq!(suggest_code("in order to"), "iot");
+        let empty: HashSet<String> = HashSet::new();
+        assert_eq!(suggest_code("machine learning model", &empty), "mlm");
+        assert_eq!(suggest_code("neural network", &empty), "nn");
+        assert_eq!(suggest_code("in order to", &empty), "iot");
+    }
+
+    #[test]
+    fn test_suggest_code_no_collision() {
+        let empty: HashSet<String> = HashSet::new();
+        assert_eq!(suggest_code("gradient descent", &empty), "gd");
+    }
+
+    #[test]
+    fn test_suggest_code_collision_once() {
+        let mut existing: HashSet<String> = HashSet::new();
+        existing.insert("mlm".into());
+        assert_eq!(suggest_code("machine learning model", &existing), "mlm2");
+    }
+
+    #[test]
+    fn test_suggest_code_collision_chain() {
+        let mut existing: HashSet<String> = HashSet::new();
+        existing.insert("mlm".into());
+        existing.insert("mlm2".into());
+        existing.insert("mlm3".into());
+        existing.insert("mlm4".into());
+        assert_eq!(suggest_code("machine learning model", &existing), "mlm5");
+    }
+
+    #[test]
+    fn test_suggest_output_shows_rename() {
+        let mut existing: HashSet<String> = HashSet::new();
+        existing.insert("mlm".into());
+        let base: String = "machine learning model"
+            .split_whitespace()
+            .filter_map(|w| w.chars().next())
+            .collect();
+        let code = suggest_code("machine learning model", &existing);
+        assert_ne!(code, base);
+        assert_eq!(code, "mlm2");
     }
 }

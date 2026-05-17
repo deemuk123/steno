@@ -1,4 +1,5 @@
 use clap::{Parser, Subcommand};
+use std::collections::HashSet;
 use std::io::{self, Read};
 use steno::build_codec;
 
@@ -277,6 +278,24 @@ fn main() {
                 d
             };
 
+            // Collect all already-assigned codes so suggest_code() can dedup
+            let mut existing_codes: HashSet<String> = combined.entries.values().cloned().collect();
+            // Also include codes already in personal.toml
+            let personal_path = steno::config::personal_dict_path();
+            if personal_path.exists() {
+                if let Ok(content) = std::fs::read_to_string(&personal_path) {
+                    if let Ok(t) = toml::from_str::<toml::Table>(&content) {
+                        if let Some(toml::Value::Table(entries)) = t.get("entries") {
+                            for v in entries.values() {
+                                if let toml::Value::String(code) = v {
+                                    existing_codes.insert(code.clone());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             let suggestions = stats.suggestions(&combined, top, min);
 
             if suggestions.is_empty() {
@@ -313,9 +332,18 @@ fn main() {
                     .unwrap_or_else(|| die("malformed [entries] in personal.toml"));
 
                 for (phrase, count) in &suggestions {
-                    let code = steno::learn::suggest_code(phrase);
+                    let base_code: String = phrase
+                        .split_whitespace()
+                        .filter_map(|w| w.chars().next())
+                        .collect();
+                    let code = steno::learn::suggest_code(phrase, &existing_codes);
+                    existing_codes.insert(code.clone());
                     entries.insert(phrase.clone(), toml::Value::String(code.clone()));
-                    println!("Added: {:?} ({} uses) → {:?}", phrase, count, code);
+                    if code != base_code {
+                        println!("Added: {:?} ({} uses) → {:?}  [renamed: {} → {}]", phrase, count, code, base_code, code);
+                    } else {
+                        println!("Added: {:?} ({} uses) → {:?}", phrase, count, code);
+                    }
                 }
 
                 let content = toml::to_string_pretty(&table)
@@ -328,9 +356,19 @@ fn main() {
                 // Display-only mode
                 println!("{:<40} {:>6}  {:<12}", "Phrase", "Uses", "Proposed code");
                 println!("{}", "-".repeat(62));
+                let mut display_codes = existing_codes.clone();
                 for (phrase, count) in &suggestions {
-                    let code = steno::learn::suggest_code(phrase);
-                    println!("{:<40} {:>6}  {:<12}", phrase, count, code);
+                    let base_code: String = phrase
+                        .split_whitespace()
+                        .filter_map(|w| w.chars().next())
+                        .collect();
+                    let code = steno::learn::suggest_code(phrase, &display_codes);
+                    display_codes.insert(code.clone());
+                    if code != base_code {
+                        println!("{:<40} {:>6}  {:<12}  [renamed: {} → {}]", phrase, count, code, base_code, code);
+                    } else {
+                        println!("{:<40} {:>6}  {:<12}", phrase, count, code);
+                    }
                 }
                 println!("\nTo add all: steno suggest --add");
                 println!("To add one: steno dict personal-add \"phrase\" \"code\"");

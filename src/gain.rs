@@ -50,7 +50,10 @@ mod tests {
     use std::path::PathBuf;
 
     fn tmp_path() -> PathBuf {
-        std::env::temp_dir().join(format!("steno-gain-test-{}.toml", std::process::id()))
+        use std::sync::atomic::{AtomicU64, Ordering};
+        static COUNTER: AtomicU64 = AtomicU64::new(0);
+        let n = COUNTER.fetch_add(1, Ordering::Relaxed);
+        std::env::temp_dir().join(format!("steno-gain-test-{}-{}.toml", std::process::id(), n))
     }
 
     #[test]
